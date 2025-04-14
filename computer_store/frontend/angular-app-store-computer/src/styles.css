@@ -21,3 +21,8 @@ footer {
   padding: 20px;
   margin-top: auto; /* Esto fuerza el footer al final sin desbordes */
 }
+input.form-control {
+  max-width: 500px;
+  width: 100%;
+}
+
