@@ -1,5 +1,8 @@
 package com.computer.computer.DTO.User;
+import com.computer.computer.DTO.Computer.ComputerDTO;
+
 import lombok.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -8,8 +11,10 @@ import lombok.*;
 public class UserDTO {
 
     private String name;
-    private int identificationDocument;
+    private Long identificationDocument;
     private String email;
-    private int numberPhone;
-
+    private Long numberPhone;
+    private List<ComputerDTO> computers;
 }
+
+

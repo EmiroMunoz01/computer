@@ -17,32 +17,35 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("user")
+@CrossOrigin(value = "http://localhost:4200")
+@RequestMapping("store")
 public class UserController {
 
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/user/get-all")
     public ResponseEntity<List<UserDTO>> getUsers() {
+
         return ResponseEntity.ok(userService.listUser());
+
     }
 
-    @PostMapping("/create")
+    @PostMapping("/user/create")
     public ResponseEntity<UserEntity> createUser(@RequestBody CreateUserDTO dto) {
         UserEntity createdUser = userService.createUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @GetMapping("/get-user/{identificationDocument}")
+    @GetMapping("/user/get-user/{identificationDocument}")
     public ResponseEntity<UserDTO> getUserByIdentificationDocument(@PathVariable int identificationDocument) {
         UserDTO userDTO = userService.findUserByDocumentIdentification(identificationDocument)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
         return ResponseEntity.ok(userDTO);
     }
 
-    @DeleteMapping("/delete-user/{identificationDocument}")
+    @DeleteMapping("/user/delete-user/{identificationDocument}")
     public ResponseEntity<?> deleteUserByIdentificationDocument(@PathVariable int identificationDocument) {
         boolean isDeleted = userService.deleteUserByDocumentIdentification(identificationDocument);
 
@@ -56,7 +59,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/update-user/{identificationDocument}")
+    @PutMapping("/user/update-user/{identificationDocument}")
     public ResponseEntity<UpdateUserDTO> updateUser(@PathVariable int identificationDocument, @RequestBody UpdateUserDTO updateUserDTO) {
         userService.updateUserByDocumentIdentification(identificationDocument, updateUserDTO);
         System.out.println("Respuesta desde controlador: " + updateUserDTO);

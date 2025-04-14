@@ -4,11 +4,8 @@ import com.computer.computer.DTO.User.CreateUserDTO;
 import com.computer.computer.DTO.User.UpdateUserDTO;
 import com.computer.computer.DTO.User.UserDTO;
 import com.computer.computer.Entity.UserEntity;
-
 import java.util.List;
 import java.util.Optional;
-
-
 
 public interface UserImpl {
 

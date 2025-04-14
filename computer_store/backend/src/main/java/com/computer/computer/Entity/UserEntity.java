@@ -33,11 +33,11 @@ public class UserEntity {
 
     @NotNull
     @Column(name = "identification_document", nullable = false, unique = true)
-    private int identificationDocument;
+    private Long identificationDocument;
 
     @NotNull
     @Column(name = "number_phone", nullable = false, unique = true)
-    private int numberPhone;
+    private Long numberPhone;
 
     @NotNull
     @Column(name = "email", nullable = false, unique = true)
@@ -46,7 +46,6 @@ public class UserEntity {
     @NotNull
     @Column(name = "password", nullable = false, unique = false)
     private String password;
-
 
     @CreationTimestamp
     @Column(updatable = false)

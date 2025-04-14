@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+import com.computer.computer.DTO.Computer.ComputerDTO;
 import com.computer.computer.DTO.User.CreateUserDTO;
 import com.computer.computer.DTO.User.UpdateUserDTO;
 import com.computer.computer.DTO.User.UserDTO;
@@ -25,15 +26,57 @@ public class UserService implements UserImpl {
     @Override
     public List<UserDTO> listUser() {
         List<UserEntity> users = userRepository.findAll();
-        return users.stream().map(user -> new UserDTO(user.getName(), user.getIdentificationDocument(), user.getEmail(),user.getNumberPhone())).collect(Collectors.toList());
-    }
 
+        return users.stream().map(user -> {
+            List<ComputerDTO> computerDTOs = user.getComputers().stream()
+                    .map(computer -> new ComputerDTO(
+                            computer.getId_computer(),
+                            computer.getProcessor(),
+                            computer.getRamMemory(),
+                            computer.getGpu(),
+                            computer.getBoard()
+                            // Agregar más campos si es necesario
+                    ))
+                    .collect(Collectors.toList());
+
+            return new UserDTO(
+                    user.getName(),
+                    user.getIdentificationDocument(),
+                    user.getEmail(),
+                    user.getNumberPhone(),
+                    computerDTOs
+            );
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public Optional<UserDTO> findUserByDocumentIdentification(int documentIdentification) {
         return userRepository.findByIdentificationDocument(documentIdentification)
-                .map(user -> new UserDTO(user.getName(), user.getIdentificationDocument(), user.getEmail(), user.getNumberPhone()));
+
+                .map(user -> {
+                    // Mapeamos cada ComputerEntity a ComputerDTO
+                    List<ComputerDTO> computerDTOs = user.getComputers().stream()
+                            .map(computer -> new ComputerDTO(
+                                    computer.getId_computer(),
+                                    computer.getProcessor(),
+                                    computer.getRamMemory(),
+                                    computer.getGpu(),
+                                    computer.getBoard()
+                                    // Agrega más campos si necesitas
+                            ))
+                            .collect(Collectors.toList());
+
+                    // Retornamos el DTO con la lista de computadores convertidos
+                    return new UserDTO(
+                            user.getName(),
+                            user.getIdentificationDocument(),
+                            user.getEmail(),
+                            user.getNumberPhone(),
+                            computerDTOs
+                    );
+                });
     }
+
 
     @Override
     @Transactional

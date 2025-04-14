@@ -15,9 +15,9 @@ public class CreateUserDTO {
 
     private String lastname;
 
-    private int identificationDocument;
+    private Long identificationDocument;
 
-    private int numberPhone;
+    private Long numberPhone;
 
     private String email;
 

@@ -48,6 +48,6 @@ public class ComputerEntity {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "id_user_store")
+    @JoinColumn(name = "identification_document", referencedColumnName = "identification_document")
     private UserEntity userStore;
 }
