@@ -1,7 +1,5 @@
 package com.computer.computer.Controller;
 
-
-
 import com.computer.computer.DTO.User.CreateUserDTO;
 import com.computer.computer.DTO.User.UpdateUserDTO;
 import com.computer.computer.DTO.User.UserDTO;
@@ -15,12 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-
 @RestController
 @CrossOrigin(value = "http://localhost:4200")
 @RequestMapping("store")
 public class UserController {
-
 
     @Autowired
     private UserService userService;
