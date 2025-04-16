@@ -35,14 +35,14 @@ public class UserController {
     }
 
     @GetMapping("/user/get-user/{identificationDocument}")
-    public ResponseEntity<UserDTO> getUserByIdentificationDocument(@PathVariable int identificationDocument) {
+    public ResponseEntity<UserDTO> getUserByIdentificationDocument(@PathVariable Long identificationDocument) {
         UserDTO userDTO = userService.findUserByDocumentIdentification(identificationDocument)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
         return ResponseEntity.ok(userDTO);
     }
 
     @DeleteMapping("/user/delete-user/{identificationDocument}")
-    public ResponseEntity<?> deleteUserByIdentificationDocument(@PathVariable int identificationDocument) {
+    public ResponseEntity<?> deleteUserByIdentificationDocument(@PathVariable Long identificationDocument) {
         boolean isDeleted = userService.deleteUserByDocumentIdentification(identificationDocument);
 
         if (isDeleted) {
@@ -56,7 +56,7 @@ public class UserController {
 
 
     @PutMapping("/user/update-user/{identificationDocument}")
-    public ResponseEntity<UpdateUserDTO> updateUser(@PathVariable int identificationDocument, @RequestBody UpdateUserDTO updateUserDTO) {
+    public ResponseEntity<UpdateUserDTO> updateUser(@PathVariable Long identificationDocument, @RequestBody UpdateUserDTO updateUserDTO) {
         userService.updateUserByDocumentIdentification(identificationDocument, updateUserDTO);
         System.out.println("Respuesta desde controlador: " + updateUserDTO);
         return ResponseEntity.ok(updateUserDTO);

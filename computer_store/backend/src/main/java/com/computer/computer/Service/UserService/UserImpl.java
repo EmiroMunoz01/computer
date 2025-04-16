@@ -13,10 +13,10 @@ public interface UserImpl {
 
     public UserEntity createUser(CreateUserDTO createUserDTO);
 
-    public Optional<UserDTO> findUserByDocumentIdentification(int userDocumentIdentification);
+    public Optional<UserDTO> findUserByDocumentIdentification(Long userDocumentIdentification);
 
-    public boolean deleteUserByDocumentIdentification(int userDocumentIdentification);
+    public boolean deleteUserByDocumentIdentification(Long userDocumentIdentification);
 
-    public Optional<UserEntity> updateUserByDocumentIdentification(int userDocumentIdentification, UpdateUserDTO updateUserDTO);
+    public Optional<UserEntity> updateUserByDocumentIdentification(Long userDocumentIdentification, UpdateUserDTO updateUserDTO);
 
 }

@@ -4,14 +4,17 @@ import java.util.Optional;
 
 import com.computer.computer.Entity.UserEntity;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<UserEntity> findByIdentificationDocument(int documentIdentification);
+    Optional<UserEntity> findByIdentificationDocument(Long documentIdentification);
 
-    void deleteByIdentificationDocument(int identificationDocument);
+    Optional<UserEntity> findByEmail(String email);
+
+    void deleteByIdentificationDocument(Long identificationDocument);
 
 
 }

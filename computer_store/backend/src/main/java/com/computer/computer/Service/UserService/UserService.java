@@ -13,6 +13,7 @@ import com.computer.computer.Entity.UserEntity;
 import com.computer.computer.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +23,9 @@ public class UserService implements UserImpl {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDTO> listUser() {
@@ -50,7 +54,7 @@ public class UserService implements UserImpl {
     }
 
     @Override
-    public Optional<UserDTO> findUserByDocumentIdentification(int documentIdentification) {
+    public Optional<UserDTO> findUserByDocumentIdentification(Long documentIdentification) {
         return userRepository.findByIdentificationDocument(documentIdentification)
 
                 .map(user -> {
@@ -80,7 +84,7 @@ public class UserService implements UserImpl {
 
     @Override
     @Transactional
-    public Optional<UserEntity> updateUserByDocumentIdentification(int userDocumentIdentification, UpdateUserDTO updateUserDTO) {
+    public Optional<UserEntity> updateUserByDocumentIdentification(Long userDocumentIdentification, UpdateUserDTO updateUserDTO) {
 
         UserEntity findUser = userRepository.findByIdentificationDocument(userDocumentIdentification).orElseThrow(() -> new RuntimeException("Usuario no encontrado con documento: " + userDocumentIdentification));
 
@@ -102,14 +106,14 @@ public class UserService implements UserImpl {
         user.setIdentificationDocument(createUserDTO.getIdentificationDocument());
         user.setNumberPhone(createUserDTO.getNumberPhone());
         user.setEmail(createUserDTO.getEmail());
-        user.setPassword(createUserDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         return userRepository.save(user);
     }
 
 
     @Override
     @Transactional
-    public boolean deleteUserByDocumentIdentification(int userDocumentIdentification) {
+    public boolean deleteUserByDocumentIdentification(Long userDocumentIdentification) {
         Optional<UserEntity> user = userRepository.findByIdentificationDocument(userDocumentIdentification);
 
         if (user.isPresent()) {
