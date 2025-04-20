@@ -51,6 +51,9 @@ public class UserEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "userStore", cascade = CascadeType.ALL)
     private List<ComputerEntity> computers = new ArrayList<>();
 

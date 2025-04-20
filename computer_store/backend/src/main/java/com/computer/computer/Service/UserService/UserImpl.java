@@ -15,6 +15,8 @@ public interface UserImpl {
 
     public Optional<UserDTO> findUserByDocumentIdentification(Long userDocumentIdentification);
 
+    public Optional<UserDTO> findUserByEmail(String userEmail);
+
     public boolean deleteUserByDocumentIdentification(Long userDocumentIdentification);
 
     public Optional<UserEntity> updateUserByDocumentIdentification(Long userDocumentIdentification, UpdateUserDTO updateUserDTO);

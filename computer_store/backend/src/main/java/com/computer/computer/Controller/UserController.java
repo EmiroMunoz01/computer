@@ -8,9 +8,12 @@ import com.computer.computer.Service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -21,12 +24,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/get-all")
+    @GetMapping("/admin/user/get-all")
     public ResponseEntity<List<UserDTO>> getUsers() {
 
         return ResponseEntity.ok(userService.listUser());
 
     }
+
+
+
+    @GetMapping("/user/profile")
+    public ResponseEntity<UserDTO> getUserProfile(Principal principal) {
+        String email = principal.getName(); // Obtener email del usuario autenticado
+
+        UserDTO userDTO = userService.findUserByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        return ResponseEntity.ok(userDTO);
+    }
+
 
     @PostMapping("/user/create")
     public ResponseEntity<UserEntity> createUser(@RequestBody CreateUserDTO dto) {
@@ -34,14 +50,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @GetMapping("/user/get-user/{identificationDocument}")
+    @GetMapping("/admin/user/get-user/{identificationDocument}")
     public ResponseEntity<UserDTO> getUserByIdentificationDocument(@PathVariable Long identificationDocument) {
         UserDTO userDTO = userService.findUserByDocumentIdentification(identificationDocument)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
         return ResponseEntity.ok(userDTO);
     }
 
-    @DeleteMapping("/user/delete-user/{identificationDocument}")
+    @DeleteMapping("/admin/user/delete-user/{identificationDocument}")
     public ResponseEntity<?> deleteUserByIdentificationDocument(@PathVariable Long identificationDocument) {
         boolean isDeleted = userService.deleteUserByDocumentIdentification(identificationDocument);
 
@@ -61,6 +77,9 @@ public class UserController {
         System.out.println("Respuesta desde controlador: " + updateUserDTO);
         return ResponseEntity.ok(updateUserDTO);
     }
+
+
+
 
 
 }
