@@ -2,78 +2,70 @@ import {Component, inject, OnInit} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthService} from '../service/auth.service';
+
+import {HttpClient} from '@angular/common/http';
+import {CommonModule, NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-user-register',
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule, NgClass, CommonModule],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css'
 })
-export default class UserRegisterComponent implements OnInit {
+export default class UserRegisterComponent {
 
   registerForm!: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
-  isLoading: boolean = false; // Nuevo: para manejar estado de carga
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private http: HttpClient,
     private router: Router
   ) {
-  }
-
-  ngOnInit(): void {
-    this.createForm();
-  }
-
-  private createForm(): void {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      lastname: ['', [Validators.required, Validators.minLength(3)]],
+      identificationDocument: ['', [Validators.required, Validators.minLength(3)]],
+      numberPhone: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    }, {validator: this.passwordMatchValidator});
   }
 
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
+  passwordMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
     return password === confirmPassword ? null : {mismatch: true};
   }
 
-  onSubmit(): void {
-    if (this.registerForm.invalid) return;
+  onSubmit() {
+    if (this.registerForm.valid) {
+      const userData = {
+        name: this.registerForm.value.name,
+        lastname: this.registerForm.value.lastname,
+        identificationDocument: this.registerForm.value.identificationDocument,
+        numberPhone: this.registerForm.value.numberPhone,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password
+      };
 
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    this.authService.createUser(this.registerForm.value).subscribe({
-      next: (response) => {
-        this.handleSuccess(response);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.handleError(error);
-        this.isLoading = false;
-      }
-    });
+      this.http.post('http://localhost:8080/store/user/create', userData)
+        .subscribe({
+          next: (response) => {
+            this.successMessage = 'Registro exitoso! Redirigiendo...';
+            this.errorMessage = '';
+            setTimeout(() => {
+              this.router.navigate(['user/login']);
+            }, 2000);
+          },
+          error: (error) => {
+            this.errorMessage = error.error.message || 'Error en el registro';
+            this.successMessage = '';
+          }
+        });
+    }
   }
 
-  private handleSuccess(response: any): void {
-    this.successMessage = 'Registro exitoso! Redirigiendo...';
-    this.errorMessage = '';
-    setTimeout(() => {
-      this.router.navigate(['/user/login']);
-    }, 2000);
-  }
-
-  private handleError(error: any): void {
-    this.errorMessage = error.error?.message || 'Error en el registro. Por favor intenta nuevamente.';
-    this.successMessage = '';
-  }
 }

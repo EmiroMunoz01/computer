@@ -6,7 +6,7 @@ export interface User_Entity_Dto {
 
   name: string
   lastname: string
-  identification_document: number
+  identificationDocument: number
   numberPhone: number
   email: string
   password: string

@@ -3,44 +3,182 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header">
-          <h3 class="text-center">Registro de Usuario</h3>
+          <h3 class="text-center">Register Of Users</h3>
         </div>
         <div class="card-body">
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Nombre de usuario</label>
-              <input type="text" class="form-control" id="username"
-                     formControlName="username" required>
+
+            <!-- Mensajes de éxito/error -->
+            <div *ngIf="successMessage" class="alert alert-success">
+              {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
             </div>
 
+            <!-- Campo Name -->
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name"
+                     formControlName="name"
+                     [ngClass]="{'is-invalid': registerForm.get('name')?.invalid &&
+                                 (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)}">
+              <div *ngIf="registerForm.get('name')?.invalid &&
+                         (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('name')?.errors?.['required']">
+                  The name is required.
+                </div>
+                <div *ngIf="registerForm.get('name')?.errors?.['minlength']">
+                  El nombre necesita mas caracteres.
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <!--Campo de apellido-->
+
+            <div class="mb-3">
+              <label for="lastname" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="lastname"
+                     formControlName="lastname"
+                     [ngClass]="{'is-invalid': registerForm.get('lastname')?.invalid &&
+                                 (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)}">
+              <div *ngIf="registerForm.get('lastname')?.invalid &&
+                         (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('lastname')?.errors?.['required']">
+                  The name is required.
+                </div>
+                <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']">
+                  El nombre necesita mas caracteres.
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+            <!--Campo de documento de identificacion-->
+
+            <div class="mb-3">
+              <label for="identificationDocument" class="form-label">Documento de Identificación</label>
+              <input type="number" class="form-control" id="identificationDocument"
+                     formControlName="identificationDocument"
+                     [ngClass]="{'is-invalid': registerForm.get('identificationDocument')?.invalid &&
+                                 (registerForm.get('identificationDocument')?.dirty || registerForm.get('identificationDocument')?.touched)}">
+              <div *ngIf="registerForm.get('identificationDocument')?.invalid &&
+                         (registerForm.get('identificationDocument')?.dirty || registerForm.get('identificationDocument')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('identificationDocument')?.errors?.['required']">
+                  The name is required.
+                </div>
+                <div *ngIf="registerForm.get('identificationDocument')?.errors?.['minlength']">
+                  El documento de identificacion necesita mas caracteres.
+                </div>
+              </div>
+            </div>
+
+
+
+            <!--Numero telefonico-->
+
+            <div class="mb-3">
+              <label for="numberPhone" class="form-label">Número telefónico</label>
+              <input type="number" class="form-control" id="numberPhone"
+                     formControlName="numberPhone"
+                     [ngClass]="{'is-invalid': registerForm.get('numberPhone')?.invalid &&
+                                 (registerForm.get('numberPhone')?.dirty || registerForm.get('numberPhone')?.touched)}">
+              <div *ngIf="registerForm.get('numberPhone')?.invalid &&
+                         (registerForm.get('numberPhone')?.dirty || registerForm.get('numberPhone')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('numberPhone')?.errors?.['required']">
+                  Número telefónico requerido.
+                </div>
+                <div *ngIf="registerForm.get('numberPhone')?.errors?.['minlength']">
+                  Número telefónico invalido.
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Campo Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
               <input type="email" class="form-control" id="email"
-                     formControlName="email" required>
+                     formControlName="email"
+                     [ngClass]="{'is-invalid': registerForm.get('email')?.invalid &&
+                                 (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)}">
+              <div *ngIf="registerForm.get('email')?.invalid &&
+                         (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('email')?.errors?.['required']">
+                  El correo electrónico es requerido
+                </div>
+                <div *ngIf="registerForm.get('email')?.errors?.['email']">
+                  Por favor ingrese un correo electrónico válido
+                </div>
+              </div>
             </div>
 
+
+
+            <!-- Campo Password -->
             <div class="mb-3">
               <label for="password" class="form-label">Contraseña</label>
               <input type="password" class="form-control" id="password"
-                     formControlName="password" required>
+                     formControlName="password"
+                     [ngClass]="{'is-invalid': registerForm.get('password')?.invalid &&
+                                 (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)}">
+              <div *ngIf="registerForm.get('password')?.invalid &&
+                         (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('password')?.errors?.['required']">
+                  La contraseña es requerida
+                </div>
+                <div *ngIf="registerForm.get('password')?.errors?.['minlength']">
+                  La contraseña debe tener al menos 6 caracteres
+                </div>
+              </div>
             </div>
 
+            <!-- Campo Confirm Password -->
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
               <input type="password" class="form-control" id="confirmPassword"
-                     formControlName="confirmPassword" required>
+                     formControlName="confirmPassword"
+                     [ngClass]="{'is-invalid': (registerForm.get('confirmPassword')?.invalid ||
+                                 registerForm.errors?.['mismatch']) &&
+                                 (registerForm.get('confirmPassword')?.dirty ||
+                                 registerForm.get('confirmPassword')?.touched)}">
+              <div *ngIf="(registerForm.get('confirmPassword')?.invalid ||
+                          registerForm.errors?.['mismatch']) &&
+                         (registerForm.get('confirmPassword')?.dirty ||
+                          registerForm.get('confirmPassword')?.touched)"
+                   class="invalid-feedback">
+                <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">
+                  Por favor confirme su contraseña
+                </div>
+                <div *ngIf="registerForm.errors?.['mismatch']">
+                  Las contraseñas no coinciden
+                </div>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-primary w-100"
-                    [disabled]="!registerForm.valid">Registrarse</button>
+                    [disabled]="registerForm.invalid">
+              Registrarse
+            </button>
           </form>
 
-          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-            {{ errorMessage }}
-          </div>
-
-          <div *ngIf="successMessage" class="alert alert-success mt-3">
-            {{ successMessage }}
+          <div class="mt-3 text-center">
+            ¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a>
           </div>
         </div>
       </div>
